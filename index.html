@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Flip — Your Renovations, Simplified.</title>
+  <link rel="icon" type="image/png" href="brand_assets/favicon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#272D53',
+            navyDeep: '#1C2140',
+            navyLight: '#3A4270',
+            cream: '#F4F3FB',
+          },
+          fontFamily: {
+            display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Helvetica Neue"', 'sans-serif'],
+            body:    ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"',    '"Helvetica Neue"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: #F4F3FB; color: #272D53; overflow-x: hidden; }
+
+    /* ── Blueprint image background ── */
+    .blueprint-bg {
+      background-color: #F4F3FB;
+      background-image: url('brand_assets/bg.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    /* ── Nav ── */
+    .nav-wrap {
+      background: transparent;
+    }
+    .nav-pill {
+      background: #272D53;
+      border-radius: 999px;
+      padding: 10px 14px 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 32px rgba(39,45,83,0.22), 0 2px 8px rgba(39,45,83,0.14);
+    }
+    .nav-link {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      letter-spacing: -0.005em;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover { color: #ffffff; }
+    .nav-cta {
+      background: #ffffff;
+      color: #272D53;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 9px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .nav-cta:hover { background: #f0eff8; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+
+    /* ── Hero headline ── */
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #272D53;
+    }
+
+    /* ── Store buttons ── */
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #272D53;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-decoration: none;
+      border: 1.5px solid #272D53;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 3px 14px rgba(39,45,83,0.22);
+    }
+    .store-btn:hover {
+      background: #3A4270;
+      border-color: #3A4270;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(39,45,83,0.3);
+    }
+    .store-btn-ghost {
+      background: transparent;
+      color: #272D53;
+      border: 1.5px solid rgba(39,45,83,0.25);
+      box-shadow: none;
+    }
+    .store-btn-ghost:hover {
+      background: rgba(39,45,83,0.04);
+      border-color: #272D53;
+      box-shadow: 0 4px 14px rgba(39,45,83,0.1);
+    }
+    .store-btn .label-top {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      line-height: 1;
+    }
+    .store-btn .label-main {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    /* ── Phone mockup ── */
+    .phone-frame {
+      background: #0a0a0a;
+      border-radius: 40px;
+      position: relative;
+      box-shadow:
+        0 0 0 1.5px rgba(255,255,255,0.08),
+        0 0 0 3px rgba(0,0,0,0.6),
+        0 32px 80px rgba(0,0,0,0.35),
+        0 8px 24px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 26px;
+      background: #0a0a0a;
+      border-radius: 0 0 16px 16px;
+      z-index: 10;
+    }
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      border-radius: 40px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── Feature Cards ── */
+    .feature-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px 28px;
+      border: 1px solid rgba(39,45,83,0.07);
+      box-shadow: 0 1px 4px rgba(39,45,83,0.05), 0 4px 20px rgba(39,45,83,0.04);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%);
+      transition: left 0.55s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .feature-card:hover::before { left: 160%; }
+    .feature-card:hover {
+      box-shadow: 0 2px 8px rgba(39,45,83,0.07), 0 20px 48px rgba(39,45,83,0.13);
+      border-color: rgba(39,45,83,0.16);
+    }
+    .icon-chip {
+      width: 48px; height: 48px;
+      background: #F4F3FB;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      border: 1px solid rgba(39,45,83,0.07);
+      flex-shrink: 0;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.35s ease;
+    }
+    .feature-card:hover .icon-chip {
+      transform: scale(1.2) rotate(-8deg);
+      box-shadow: 0 6px 18px rgba(39,45,83,0.14);
+    }
+
+    /* ── Stats band ── */
+    .stats-band { background: #272D53; position: relative; overflow: hidden; }
+    .stats-band::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 100% at 0% 50%, rgba(58,66,112,0.55) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 80% at 100% 50%, rgba(20,25,55,0.7) 0%, transparent 60%);
+    }
+
+    /* ── Testimonial ── */
+    .testi-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid rgba(39,45,83,0.07);
+      box-shadow: 0 2px 16px rgba(39,45,83,0.06);
+      transition: transform 0.2s ease;
+    }
+    .testi-card:hover { transform: translateY(-3px); }
+
+    /* ── CTA section ── */
+    .cta-section {
+      background: #272D53;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 80% at 20% 50%, rgba(58,66,112,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 85% 20%, rgba(20,25,55,0.65) 0%, transparent 55%);
+    }
+    .cta-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 75%);
+    }
+
+    /* ── Pill badge ── */
+    .section-pill {
+      display: inline-flex; align-items: center;
+      background: rgba(39,45,83,0.06);
+      border: 1px solid rgba(39,45,83,0.09);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(39,45,83,0.55);
+      margin-bottom: 20px;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes phoneRise {
+      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .anim-1 { animation: fadeUp 0.65s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.05s; }
+    .anim-2 { animation: fadeUp 0.65s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.15s; }
+    .anim-3 { animation: fadeUp 0.65s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.25s; }
+    .anim-4 { animation: fadeUp 0.65s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.36s; }
+    .phone-left  { animation: phoneRise 0.9s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.3s; }
+    .phone-mid   { animation: phoneRise 0.9s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.15s; }
+    .phone-right { animation: phoneRise 0.9s cubic-bezier(.25,.46,.45,.94) both; animation-delay: 0.4s; }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(.25,.46,.45,.94), transform 0.6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Footer ── */
+    .footer-bg { background: #1C2140; }
+    .divider-light { height: 1px; background: rgba(255,255,255,0.07); }
+
+    /* ── Step connector ── */
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 800;
+      color: rgba(39,45,83,0.05);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      position: absolute;
+      top: -10px; left: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+    .step-circle {
+      width: 38px; height: 38px;
+      background: #272D53;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(39,45,83,0.28);
+    }
+
+    /* plus decorative marks */
+    .plus-mark {
+      position: absolute;
+      color: rgba(39,45,83,0.15);
+      font-size: 24px;
+      font-weight: 300;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Blueprint wrapper: nav + hero share one continuous background -->
+  <div style="background: url('brand_assets/bg.png') top center / cover no-repeat; background-color: #F4F3FB;">
+
+  <!-- ═══════════════════════════════════════ NAVBAR ═══ -->
+  <nav class="nav-wrap sticky top-0 z-50" style="padding: 16px 24px;">
+    <div class="max-w-5xl mx-auto">
+      <div class="nav-pill">
+
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2.5" style="text-decoration:none; flex-shrink:0;">
+          <img src="brand_assets/white_logo_transparent 1.png" alt="Smart Flip" style="width:30px; height:30px;" />
+          <span style="font-family:var(--font-display); font-weight:700; font-size:16px; letter-spacing:-0.03em; color:#ffffff;">Smart Flip</span>
+        </a>
+
+        <!-- Nav links -->
+        <div class="hidden md:flex items-center gap-7">
+          <a href="#" class="nav-link">Home</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#app" class="nav-link">Mobile App</a>
+          <a href="#how-it-works" class="nav-link">Resources</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+
+        <a href="#" class="nav-cta">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════ HERO ══════ -->
+  <section class="relative overflow-hidden" style="min-height:92vh; display:flex; flex-direction:column; justify-content:center; background:transparent;">
+
+    <!-- Decorative plus marks -->
+    <span class="plus-mark" style="top:60px; left:40px;">+</span>
+    <span class="plus-mark" style="top:60px; right:40px;">+</span>
+    <span class="plus-mark" style="bottom:80px; left:40px;">+</span>
+    <span class="plus-mark" style="bottom:80px; right:40px;">+</span>
+    <span class="plus-mark" style="top:50%; left:40px; transform:translateY(-50%);">+</span>
+    <span class="plus-mark" style="top:50%; right:40px; transform:translateY(-50%);">+</span>
+
+    <!-- Subtle radial vignette to focus center -->
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, rgba(244,243,251,0.6) 100%); pointer-events:none; z-index:1;"></div>
+
+    <div class="max-w-6xl mx-auto px-6 w-full relative" style="z-index:2; padding-top:80px; padding-bottom:20px;">
+
+      <!-- Text block — centered -->
+      <div style="text-align:center; max-width:680px; margin:0 auto 64px;">
+        <h1 class="hero-headline anim-1" style="font-size:clamp(42px,5.5vw,68px); margin-bottom:20px;">
+          Smart Flip. Your renovations,<br />simplified.
+        </h1>
+        <p class="anim-2" style="font-size:17px; line-height:1.7; color:rgba(39,45,83,0.6); font-weight:300; letter-spacing:-0.01em; margin-bottom:36px;">
+          Track house flips, manage contractors, and monitor budgets — all from your phone.
+        </p>
+
+        <!-- Store buttons -->
+        <div class="anim-3" style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+          <a href="#" class="store-btn">
+            <!-- Apple icon -->
+            <svg width="20" height="24" viewBox="0 0 20 24" fill="currentColor"><path d="M16.462 12.703c-.021-2.56 2.093-3.793 2.187-3.855-1.192-1.742-3.046-1.98-3.706-2.007-1.576-.16-3.082.929-3.882.929-.8 0-2.028-.908-3.334-.882-1.718.026-3.314 1.002-4.2 2.533C1.8 12.2 3.059 17.87 4.762 20.98c.845 1.53 1.853 3.242 3.168 3.187 1.277-.052 1.757-.82 3.298-.82 1.541 0 1.983.82 3.335.793 1.373-.022 2.24-1.554 3.072-3.092.975-1.771 1.374-3.494 1.394-3.585-.03-.013-2.66-1.018-2.567-4.76ZM13.99 4.572C14.69 3.72 15.17 2.53 15.031 1.32c-1.03.042-2.28.687-3.017 1.52-.663.75-1.244 1.955-1.087 3.109 1.15.089 2.326-.584 3.063-1.377Z"/></svg>
+            <div>
+              <div class="label-top">Download on the</div>
+              <div class="label-main">App Store</div>
+            </div>
+          </a>
+          <a href="#" class="store-btn store-btn-ghost">
+            <!-- Google Play icon -->
+            <svg width="21" height="23" viewBox="0 0 21 23" fill="none"><path d="M.5 1.27C.5.57 1.27.19 1.82.52l17.54 10.09a.94.94 0 0 1 0 1.64L1.82 22.34C1.27 22.67.5 22.29.5 21.59V1.27Z" fill="#272D53" opacity=".8"/><path d="M.5 1.27L11.35 11.5.5 21.59V1.27Z" fill="#272D53" opacity=".5"/></svg>
+            <div>
+              <div class="label-top" style="color:rgba(39,45,83,0.65);">GET IT ON</div>
+              <div class="label-main" style="color:#272D53;">Google Play</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Phone image -->
+      <div style="position:relative; margin-top:-20px;">
+        <img
+          src="brand_assets/phones-hero.png"
+          alt="Smart Flip App — Contracts, Home, and Properties screens"
+          class="anim-4"
+          style="display:block; margin:0 auto; width:100%; max-width:820px; mix-blend-mode:screen; position:relative; z-index:1;"
+        />
+      </div>
+    </div>
+  </section>
+  </div><!-- /blueprint wrapper -->
+
+
+  <!-- ═══════════════════════════════════════ TRUST BAR ═══ -->
+  <div style="background:#fff; border-top:1px solid rgba(39,45,83,0.07); border-bottom:1px solid rgba(39,45,83,0.07);">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
+      <p style="font-size:11px; color:rgba(39,45,83,0.35); letter-spacing:0.08em; text-transform:uppercase; font-weight:500;">Available on</p>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 20 24" fill="#272D53" opacity="0.45"><path d="M16.462 12.703c-.021-2.56 2.093-3.793 2.187-3.855-1.192-1.742-3.046-1.98-3.706-2.007-1.576-.16-3.082.929-3.882.929-.8 0-2.028-.908-3.334-.882-1.718.026-3.314 1.002-4.2 2.533C1.8 12.2 3.059 17.87 4.762 20.98c.845 1.53 1.853 3.242 3.168 3.187 1.277-.052 1.757-.82 3.298-.82 1.541 0 1.983.82 3.335.793 1.373-.022 2.24-1.554 3.072-3.092.975-1.771 1.374-3.494 1.394-3.585-.03-.013-2.66-1.018-2.567-4.76ZM13.99 4.572C14.69 3.72 15.17 2.53 15.031 1.32c-1.03.042-2.28.687-3.017 1.52-.663.75-1.244 1.955-1.087 3.109 1.15.089 2.326-.584 3.063-1.377Z"/></svg>
+        <span style="font-family:var(--font-display); font-size:14px; font-weight:700; color:rgba(39,45,83,0.3); letter-spacing:-0.01em;">iOS</span>
+      </div>
+      <span style="color:rgba(39,45,83,0.12);">·</span>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <svg width="16" height="17" viewBox="0 0 21 23" fill="none" opacity="0.45"><path d="M.5 1.27C.5.57 1.27.19 1.82.52l17.54 10.09a.94.94 0 0 1 0 1.64L1.82 22.34C1.27 22.67.5 22.29.5 21.59V1.27Z" fill="#272D53"/></svg>
+        <span style="font-family:var(--font-display); font-size:14px; font-weight:700; color:rgba(39,45,83,0.3); letter-spacing:-0.01em;">Android</span>
+      </div>
+      <span style="color:rgba(39,45,83,0.12);">·</span>
+      <span style="font-family:var(--font-display); font-size:14px; font-weight:700; color:rgba(39,45,83,0.3);">4.8 ★ App Store</span>
+      <span style="color:rgba(39,45,83,0.12);">·</span>
+      <span style="font-size:13px; color:rgba(39,45,83,0.35); font-weight:300;">Used by investors across 50+ cities</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════ FEATURES ═══ -->
+  <section id="features" class="py-28" style="background:#F4F3FB; position:relative; overflow:hidden;">
+    <img src="brand_assets/Feature_bg.jpg" alt="" style="position:absolute; top:50%; left:-5%; transform:translateY(-50%); width:65%; height:auto; opacity:0.1; pointer-events:none; user-select:none;" />
+    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to right, transparent 40%, #F4F3FB 75%); pointer-events:none; z-index:0;"></div>
+    <div class="max-w-6xl mx-auto px-6" style="position:relative; z-index:1;">
+
+      <div class="max-w-2xl mb-16 reveal">
+        <span class="section-pill">Platform Features</span>
+        <h2 style="font-family:var(--font-display); font-weight:800; font-size:clamp(34px,4.5vw,52px); letter-spacing:-0.04em; line-height:1.05; color:#272D53; margin-bottom:16px;">
+          Everything your flip needs.
+        </h2>
+        <p style="font-size:17px; line-height:1.7; color:rgba(39,45,83,0.6); font-weight:300;">
+          Smart Flip brings your entire renovation workflow into one clean mobile experience — from day one to closing day.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
+
+        <div class="feature-card reveal" style="transition-delay:0.04s;">
+          <div class="icon-chip" style="background:#EEF4FD;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14.5 2.5c0 1.5-1.36 3-2.96 3H8a2 2 0 0 0-2 2v1" stroke="#5B8FE8" stroke-width="1.6" stroke-linecap="round"/><path d="M14 7h4.5a1 1 0 0 1 .76 1.65l-2 2.35 2 2.35A1 1 0 0 1 18.5 15H14" stroke="#5B8FE8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6l-2.5 2.5L6 11" stroke="#5B8FE8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 14l1.5 6" stroke="#5B8FE8" stroke-width="1.6" stroke-linecap="round"/><path d="M3.5 14l1.5 6" stroke="#5B8FE8" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Contractors</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Find, hire, and manage general contractors for your flip projects from one place.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.08s;">
+          <div class="icon-chip" style="background:#FEF0F6;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.5 4.5 7 7l5.5 5.5-2.5 2.5L4.5 9.5 2 12l10 10 2.5-2.5-1.5-1.5 7-7a2 2 0 0 0 0-2.83L17.33 5.5a2 2 0 0 0-2.83 0L13 7l-1.5-1.5L14 3l-4.5 1.5Z" stroke="#E84B8A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Painters</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Connect with professional painters and get accurate quotes for interior and exterior work.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.12s;">
+          <div class="icon-chip" style="background:#EEF8FC;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3c-1 2.5-4 4-4 7a4 4 0 0 0 8 0c0-3-3-4.5-4-7Z" stroke="#5BB8D4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 17c-1 1.5-1 2.5 0 3.5" stroke="#5BB8D4" stroke-width="1.6" stroke-linecap="round"/><path d="M16 17c1 1.5 1 2.5 0 3.5" stroke="#5BB8D4" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Plumbers</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Schedule licensed plumbers for repairs, installs, and inspections on your properties.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.16s;">
+          <div class="icon-chip" style="background:#ECEEF5;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H13L13 2Z" stroke="#2A3560" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Electricians</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Book certified electricians for panel upgrades, wiring, and code-compliant work.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.20s;">
+          <div class="icon-chip" style="background:#EEF8F3;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9.5Z" stroke="#52B788" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="#52B788" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Realtors</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Partner with investor-friendly realtors to find deals and list finished flips fast.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.24s;">
+          <div class="icon-chip" style="background:#EEF8F3;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2c0 0-6 5-6 11a6 6 0 0 0 12 0C18 7 12 2 12 2Z" stroke="#52B788" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-8" stroke="#52B788" stroke-width="1.6" stroke-linecap="round"/><path d="M9 16l3-3 3 3" stroke="#52B788" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Landscape</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Hire landscapers to boost curb appeal and maximize your property's after-repair value.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.28s;">
+          <div class="icon-chip" style="background:#F4EEF9;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#9467CC" stroke-width="1.6"/><path d="M12 3a2 2 0 0 1 1.95 1.56C15.3 4.94 16.5 5.6 17.66 5.27A2 2 0 0 1 20.73 8c-.33 1.16.33 2.36.44 2.05A2 2 0 0 1 21 12a2 2 0 0 1-1.56 1.95c-.33 1.16.33 2.36-.27 3.66A2 2 0 0 1 16 20.73c-1.16-.33-2.36.33-3.05.44A2 2 0 0 1 12 21a2 2 0 0 1-1.95-1.56c-1.16.33-2.36-.33-3.66.27A2 2 0 0 1 3.27 16c.33-1.16-.33-2.36-.44-3.05A2 2 0 0 1 3 12a2 2 0 0 1 1.56-1.95C4.23 8.89 3.57 7.69 3.27 8A2 2 0 0 1 6.34 3.27c1.16.33 2.36-.33 3.05-.44A2 2 0 0 1 12 3Z" stroke="#9467CC" stroke-width="1.6"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Interior Design</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Work with designers to stage and style interiors that sell faster and for more money.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.32s;">
+          <div class="icon-chip" style="background:#EEF8FC;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12c2-3 4-4.5 6-4.5s4 3 6 3 4-4.5 6-4.5" stroke="#5BB8D4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17c2-3 4-4.5 6-4.5s4 3 6 3 4-4.5 6-4.5" stroke="#5BB8D4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Pools</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Get quotes from pool contractors for new builds, resurfacing, and equipment repairs.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.36s;">
+          <div class="icon-chip" style="background:#F2F2F4;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1" y="14" width="14" height="7" rx="2" stroke="#9098A9" stroke-width="1.6"/><path d="M15 18h4a2 2 0 0 0 2-2v-3l-3-5H15" stroke="#9098A9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="21" r="1.5" fill="#9098A9"/><circle cx="18.5" cy="21" r="1.5" fill="#9098A9"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Dumper Loads</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Schedule debris removal and dumpster hauls to keep your job site clean and on schedule.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.40s;">
+          <div class="icon-chip" style="background:#FAF2EA;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 10h20" stroke="#BF7530" stroke-width="1.6" stroke-linecap="round"/><path d="M5 10V7a7 7 0 0 1 14 0v3" stroke="#BF7530" stroke-width="1.6" stroke-linecap="round"/><rect x="4" y="10" width="16" height="4" rx="1" stroke="#BF7530" stroke-width="1.6"/><path d="M10 14v6M14 14v6" stroke="#BF7530" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:#272D53; margin-bottom:8px;">Roofing</h3>
+          <p style="font-size:13.5px; line-height:1.65; color:rgba(39,45,83,0.6); font-weight:300;">Source trusted roofers for inspections, repairs, and full replacements on your flips.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════ STATS ═════ -->
+  <div class="stats-band py-20">
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="reveal">
+          <div style="font-family:var(--font-display); font-size:clamp(34px,4.5vw,50px); font-weight:800; color:#fff; letter-spacing:-0.04em; line-height:1;">12,400+</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px; letter-spacing:0.03em;">Active Investors</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.1s;">
+          <div style="font-family:var(--font-display); font-size:clamp(34px,4.5vw,50px); font-weight:800; color:#fff; letter-spacing:-0.04em; line-height:1;">$2.4B+</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px; letter-spacing:0.03em;">Renovation Spend Tracked</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.2s;">
+          <div style="font-family:var(--font-display); font-size:clamp(34px,4.5vw,50px); font-weight:800; color:#7FFFD4; letter-spacing:-0.04em; line-height:1;">4.8 ★</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px; letter-spacing:0.03em;">App Store Rating</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.3s;">
+          <div style="font-family:var(--font-display); font-size:clamp(34px,4.5vw,50px); font-weight:800; color:#fff; letter-spacing:-0.04em; line-height:1;">50+</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px; letter-spacing:0.03em;">Cities Covered</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════ APP SCREENSHOT CAROUSEL ═══ -->
+  <section id="app" style="background:#ffffff; padding:72px 0; overflow:hidden;">
+    <style>
+      .carousel-track {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: max-content;
+        animation: scrollLeft 40s linear infinite;
+      }
+      .carousel-track:hover { animation-play-state: paused; }
+      @keyframes scrollLeft {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .carousel-slide {
+        flex-shrink: 0;
+      }
+      .carousel-slide img {
+        height: 480px;
+        width: auto !important;
+        max-width: none !important;
+        border-radius: 32px;
+        display: block;
+        box-shadow: 0 4px 24px rgba(39,45,83,0.10), 0 1px 6px rgba(39,45,83,0.07);
+      }
+    </style>
+    <div style="display:flex; overflow:hidden; mask-image:linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); -webkit-mask-image:linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);">
+      <div class="carousel-track">
+        <!-- set 1 -->
+        <div class="carousel-slide"><img src="brand_assets/1.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/10.png" alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/2.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/3.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/4.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/5.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/6.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/7.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/8.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/9.png"  alt="App screen" /></div>
+        <!-- set 2 — duplicate for seamless loop -->
+        <div class="carousel-slide"><img src="brand_assets/1.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/10.png" alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/2.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/3.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/4.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/5.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/6.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/7.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/8.png"  alt="App screen" /></div>
+        <div class="carousel-slide"><img src="brand_assets/9.png"  alt="App screen" /></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════ HOW IT WORKS ═══ -->
+  <section id="how-it-works" class="py-28" style="background:#F4F3FB;">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="max-w-2xl mx-auto text-center mb-20 reveal">
+        <span class="section-pill">How It Works</span>
+        <h2 style="font-family:var(--font-display); font-weight:800; font-size:clamp(34px,4.5vw,52px); letter-spacing:-0.04em; line-height:1.05; color:#272D53;">
+          From purchase to profit,<br />step by step.
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="reveal relative" style="padding-top:20px; transition-delay:0.04s;">
+          <span class="step-num">01</span>
+          <div style="position:relative; z-index:1;">
+            <div class="step-circle mb-5">1</div>
+            <h3 style="font-family:var(--font-display); font-size:21px; font-weight:700; letter-spacing:-0.03em; color:#272D53; margin-bottom:10px;">Add your property</h3>
+            <p style="font-size:15px; line-height:1.7; color:rgba(39,45,83,0.6); font-weight:300;">Create a project for each house you're flipping. Set your purchase price, target budget, and target sale price.</p>
+          </div>
+        </div>
+        <div class="reveal relative" style="padding-top:20px; transition-delay:0.14s;">
+          <span class="step-num">02</span>
+          <div style="position:relative; z-index:1;">
+            <div class="step-circle mb-5">2</div>
+            <h3 style="font-family:var(--font-display); font-size:21px; font-weight:700; letter-spacing:-0.03em; color:#272D53; margin-bottom:10px;">Manage contractors & tasks</h3>
+            <p style="font-size:15px; line-height:1.7; color:rgba(39,45,83,0.6); font-weight:300;">Add contractors, assign tasks, track work progress, and log expenses as they happen — all from your phone on-site.</p>
+          </div>
+        </div>
+        <div class="reveal relative" style="padding-top:20px; transition-delay:0.24s;">
+          <span class="step-num">03</span>
+          <div style="position:relative; z-index:1;">
+            <div class="step-circle mb-5">3</div>
+            <h3 style="font-family:var(--font-display); font-size:21px; font-weight:700; letter-spacing:-0.03em; color:#272D53; margin-bottom:10px;">Sell and see your profit</h3>
+            <p style="font-size:15px; line-height:1.7; color:rgba(39,45,83,0.6); font-weight:300;">Close the project when you sell. Smart Flip calculates your net profit, ROI, and stores it in your deal history.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════ TESTIMONIALS ═══ -->
+  <section id="results" style="background:#ffffff;" class="py-28">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="max-w-2xl mb-16 reveal">
+        <span class="section-pill">Investor Stories</span>
+        <h2 style="font-family:var(--font-display); font-weight:800; font-size:clamp(34px,4.5vw,52px); letter-spacing:-0.04em; line-height:1.05; color:#272D53;">
+          Real flips. Real profits.
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="testi-card reveal" style="transition-delay:0.04s;">
+          <div style="color:#F4B942; font-size:14px; margin-bottom:18px;">★★★★★</div>
+          <p style="font-size:15.5px; line-height:1.75; color:rgba(39,45,83,0.75); font-weight:300; margin-bottom:22px; font-style:italic;">"I used to manage everything in a spreadsheet. Smart Flip replaced 4 different tools with one clean app. My contractor coordination went from chaos to clockwork."</p>
+          <div style="display:flex; align-items:center; gap:11px;">
+            <img src="brand_assets/James R.jpg" alt="James R." style="width:40px;height:40px;border-radius:50%;flex-shrink:0;object-fit:cover;" />
+            <div>
+              <div style="font-family:var(--font-display); font-weight:700; font-size:14px; color:#272D53;">James R.</div>
+              <div style="font-size:12px; color:rgba(39,45,83,0.4);">Chicago, IL · 34 flips</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal" style="transition-delay:0.12s;">
+          <div style="color:#F4B942; font-size:14px; margin-bottom:18px;">★★★★★</div>
+          <p style="font-size:15.5px; line-height:1.75; color:rgba(39,45,83,0.75); font-weight:300; margin-bottom:22px; font-style:italic;">"The budget tracking alone saved me on my last flip. I caught a contractor going over-scope before it was too late. That caught $8K in overruns."</p>
+          <div style="display:flex; align-items:center; gap:11px;">
+            <img src="brand_assets/Maria T.jpg" alt="Maria T." style="width:40px;height:40px;border-radius:50%;flex-shrink:0;object-fit:cover;" />
+            <div>
+              <div style="font-family:var(--font-display); font-weight:700; font-size:14px; color:#272D53;">Maria T.</div>
+              <div style="font-size:12px; color:rgba(39,45,83,0.4);">Miami, FL · 11 flips</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal" style="transition-delay:0.2s;">
+          <div style="color:#F4B942; font-size:14px; margin-bottom:18px;">★★★★★</div>
+          <p style="font-size:15.5px; line-height:1.75; color:rgba(39,45,83,0.75); font-weight:300; margin-bottom:22px; font-style:italic;">"Having all my property photos, contracts, and permits in one app instead of scattered across my email and camera roll is genuinely life-changing."</p>
+          <div style="display:flex; align-items:center; gap:11px;">
+            <img src="brand_assets/Derek K.jpg" alt="Derek K." style="width:40px;height:40px;border-radius:50%;flex-shrink:0;object-fit:cover;" />
+            <div>
+              <div style="font-family:var(--font-display); font-weight:700; font-size:14px; color:#272D53;">Derek K.</div>
+              <div style="font-size:12px; color:rgba(39,45,83,0.4);">Austin, TX · 22 flips</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════ CTA ════════ -->
+  <section class="cta-section py-28">
+    <div class="cta-grid"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
+      <img src="brand_assets/white_logo_transparent 1.png" alt="" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:380px;opacity:0.04;pointer-events:none;" />
+      <div class="reveal max-w-2xl mx-auto">
+        <h2 style="font-family:var(--font-display); font-weight:800; font-size:clamp(36px,5.5vw,60px); letter-spacing:-0.04em; line-height:1.05; color:#fff; margin-bottom:18px;">
+          Download Smart Flip<br />and flip smarter.
+        </h2>
+        <p style="font-size:17px; line-height:1.7; color:rgba(255,255,255,0.55); font-weight:300; margin-bottom:40px;">
+          Available free on iOS and Android. Start your first flip project in minutes.
+        </p>
+        <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+          <a href="#" class="store-btn" style="background:#fff; color:#272D53; border-color:#fff; box-shadow:0 4px 24px rgba(0,0,0,0.2);">
+            <svg width="20" height="24" viewBox="0 0 20 24" fill="#272D53"><path d="M16.462 12.703c-.021-2.56 2.093-3.793 2.187-3.855-1.192-1.742-3.046-1.98-3.706-2.007-1.576-.16-3.082.929-3.882.929-.8 0-2.028-.908-3.334-.882-1.718.026-3.314 1.002-4.2 2.533C1.8 12.2 3.059 17.87 4.762 20.98c.845 1.53 1.853 3.242 3.168 3.187 1.277-.052 1.757-.82 3.298-.82 1.541 0 1.983.82 3.335.793 1.373-.022 2.24-1.554 3.072-3.092.975-1.771 1.374-3.494 1.394-3.585-.03-.013-2.66-1.018-2.567-4.76ZM13.99 4.572C14.69 3.72 15.17 2.53 15.031 1.32c-1.03.042-2.28.687-3.017 1.52-.663.75-1.244 1.955-1.087 3.109 1.15.089 2.326-.584 3.063-1.377Z"/></svg>
+            <div>
+              <div class="label-top" style="color:rgba(39,45,83,0.6);">Download on the</div>
+              <div class="label-main" style="color:#272D53;">App Store</div>
+            </div>
+          </a>
+          <a href="#" class="store-btn" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); color:#fff; box-shadow:none;">
+            <svg width="21" height="23" viewBox="0 0 21 23" fill="none"><path d="M.5 1.27C.5.57 1.27.19 1.82.52l17.54 10.09a.94.94 0 0 1 0 1.64L1.82 22.34C1.27 22.67.5 22.29.5 21.59V1.27Z" fill="rgba(255,255,255,0.85)"/></svg>
+            <div>
+              <div class="label-top" style="color:rgba(255,255,255,0.6);">GET IT ON</div>
+              <div class="label-main">Google Play</div>
+            </div>
+          </a>
+        </div>
+        <p style="margin-top:22px; font-size:12px; color:rgba(255,255,255,0.28);">Free to download · No credit card required</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════ FOOTER ════ -->
+  <footer class="footer-bg" id="contact">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid md:grid-cols-4 gap-10 mb-14">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <img src="brand_assets/white_logo_transparent 1.png" alt="Smart Flip" style="width:30px; height:30px;" />
+            <span style="font-family:var(--font-display); font-weight:700; font-size:17px; letter-spacing:-0.03em; color:#fff;">Smart Flip</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:rgba(255,255,255,0.35); font-weight:300;">Track house flips, manage contractors, and monitor budgets — all from your phone.</p>
+        </div>
+        <div>
+          <h4 style="font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:16px;">Product</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="#features" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Features</a></li>
+            <li><a href="#app" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Mobile App</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:16px;">Resources</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="#how-it-works" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">How It Works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:16px;">Company</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="#" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">About</a></li>
+            <li><a href="#" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Privacy Policy</a></li>
+            <li><a href="#" style="font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="divider-light mb-8"></div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center; text-align:center;">
+        <p style="font-size:12.5px; color:rgba(255,255,255,0.2); font-weight:300;">© 2024 Smart Flip, Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // 3D tilt on feature cards
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        const rotY =  (x / r.width)  * 12;
+        const rotX = -(y / r.height) * 12;
+        card.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.5s cubic-bezier(.25,.46,.45,.94), box-shadow 0.3s ease, border-color 0.3s ease';
+      });
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+      });
+    });
+  </script>
+</body>
+</html>
